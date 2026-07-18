@@ -163,7 +163,7 @@ function toggleSteps(){
 
 function saveKey(){
   const k=document.getElementById('apiKey').value.trim();
-  if(!k.startsWith('AIza')){alert('المفتاح يجب أن يبدأ بـ AIza');return;}
+  if(!k.startsWith('AIza')&&!k.startsWith('AQ.')){alert('المفتاح غير صحيح');return;}
   apiKey=k;
   localStorage.setItem('gemini_key',k);
   document.getElementById('keyOk').style.display='flex';
