@@ -9,13 +9,10 @@
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'Tajawal',Arial,sans-serif;background:#F4F7F6;color:#1C2B28;min-height:100vh;padding:18px;direction:rtl}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .hdr{text-align:center;margin-bottom:20px}
 .hdr-ico{width:64px;height:64px;background:linear-gradient(135deg,#00897B,#00695C);border-radius:18px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:10px;box-shadow:0 4px 16px rgba(0,150,136,.3)}
 .hdr h1{font-size:1.65rem;font-weight:900}
 .hdr p{font-size:.88rem;color:#546E7A;margin-top:4px}
-
-/* API Key */
 .key-card{background:#fff;border-radius:16px;padding:14px;margin-bottom:16px;border:1.5px solid #CFE8E5}
 .key-title{font-size:.82rem;font-weight:700;color:#546E7A;margin-bottom:8px}
 .key-row{display:flex;gap:8px}
@@ -23,31 +20,28 @@ body{font-family:'Tajawal',Arial,sans-serif;background:#F4F7F6;color:#1C2B28;min
 .key-input:focus{border-color:#00897B}
 .key-save{padding:11px 16px;background:linear-gradient(135deg,#00897B,#00695C);color:#fff;border:none;border-radius:12px;font-size:.85rem;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap}
 .key-ok{display:none;margin-top:8px;background:#E8F5E9;border:1.5px solid #25D366;border-radius:10px;padding:9px 12px;font-size:.8rem;color:#1B5E20;font-weight:600;align-items:center;gap:6px}
-.key-help{font-size:.74rem;color:#90A4AE;margin-top:7px;line-height:1.6}
-.key-help a{color:#00897B;text-decoration:none}
-
+.key-help{font-size:.74rem;color:#90A4AE;margin-top:7px;line-height:1.7}
+.key-help a{color:#00897B;text-decoration:none;font-weight:700}
+.key-steps{background:#E8F5E9;border-radius:10px;padding:10px 12px;margin-top:8px;font-size:.78rem;color:#1B5E20;line-height:1.9;display:none}
+.key-steps.show{display:block}
+.key-toggle{background:none;border:none;color:#00897B;font-size:.78rem;font-family:inherit;cursor:pointer;margin-top:5px;font-weight:700;padding:0}
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .src-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:22px 12px;border-radius:18px;border:2px solid #B2DFDB;background:#fff;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);user-select:none;-webkit-tap-highlight-color:transparent}
 .src-btn.cam{background:#E0F2F1;border-color:#80CBC4}
 .src-btn .ico{font-size:2.2rem;line-height:1}
 .src-btn .lbl{font-size:.9rem;font-weight:800;color:#00695C}
 .src-btn .sub{font-size:.73rem;color:#546E7A}
-
 .prev-card{background:#fff;border-radius:20px;border:1.5px solid #CFE8E5;overflow:hidden;margin-bottom:14px;display:none;box-shadow:0 2px 12px rgba(0,150,136,.1)}
 .prev-card img{width:100%;max-height:260px;object-fit:cover;display:block}
 .prev-acts{display:flex;border-top:1px solid #CFE8E5}
 .prev-btn{flex:1;padding:11px;border:none;background:#F4F7F6;color:#546E7A;font-size:.83rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px}
 .prev-btn+.prev-btn{border-right:1px solid #CFE8E5}
-
 .an-btn{width:100%;padding:15px;background:linear-gradient(135deg,#00897B,#00695C);color:#fff;border:none;border-radius:16px;font-size:1.07rem;font-weight:900;font-family:inherit;cursor:pointer;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,150,136,.33);display:none;align-items:center;justify-content:center;gap:10px}
 .an-btn:disabled{opacity:.6;cursor:not-allowed}
-
 .loading{display:none;text-align:center;padding:30px;background:#fff;border-radius:20px;border:1.5px solid #CFE8E5;margin-bottom:16px}
 .spinner{width:46px;height:46px;border:4px solid #B2DFDB;border-top-color:#00897B;border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite}
 .loading p{color:#546E7A;font-weight:600}
-
 .err-box{display:none;background:#FFEBEE;border:1.5px solid #FFCDD2;border-radius:16px;padding:13px 18px;margin-bottom:14px;color:#C62828;font-weight:700;text-align:center;line-height:1.7}
-
 .result-card{display:none;background:#fff;border-radius:20px;border:1.5px solid #CFE8E5;box-shadow:0 2px 12px rgba(0,150,136,.1);margin-bottom:16px;overflow:hidden}
 .res-hdr{background:linear-gradient(135deg,#00897B,#00695C);padding:13px 18px;display:flex;align-items:center;gap:10px;color:#fff}
 .res-hdr h2{font-size:1rem;font-weight:800;margin:0}
@@ -60,12 +54,10 @@ body{font-family:'Tajawal',Arial,sans-serif;background:#F4F7F6;color:#1C2B28;min
 .f-val{font-size:.97rem;font-weight:800;color:#1C2B28;word-break:break-all}
 .f-val.mono{font-family:'Courier New',monospace;letter-spacing:.04em}
 .f-null{color:#B0BEC5;font-weight:400;font-style:italic;font-size:.88rem}
-
 .act-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 14px}
 .act-btn{padding:11px 8px;border-radius:12px;border:none;cursor:pointer;font-size:.86rem;font-weight:700;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
 .act-copy{background:#FFFDE7;color:#7B5800;border:1.5px solid #F9A825}
 .act-wa{background:#E8F5E9;color:#1B5E20;border:1.5px solid #25D366}
-
 .priv{background:#FFFDE7;border:1px solid #FFE082;border-radius:12px;padding:10px 14px;font-size:.78rem;color:#6D4C00;text-align:center;line-height:1.6}
 .priv strong{display:block;margin-bottom:2px}
 </style>
@@ -77,19 +69,22 @@ body{font-family:'Tajawal',Arial,sans-serif;background:#F4F7F6;color:#1C2B28;min
     <svg width="34" height="34" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM6 10h2v2H6zm0 4h8v2H6zm4-4h8v2h-8z"/></svg>
   </div>
   <h1>قارئ جواز السفر</h1>
-  <p>استخرج بيانات أي جواز سفر بالذكاء الاصطناعي</p>
+  <p>استخرج بيانات أي جواز سفر — مجاناً</p>
 </div>
 
-<!-- API Key -->
 <div class="key-card">
-  <div class="key-title">🔑 مفتاح Anthropic API</div>
+  <div class="key-title">🔑 مفتاح Google Gemini API — مجاني</div>
   <div class="key-row">
-    <input class="key-input" id="apiKey" type="password" placeholder="sk-ant-api03-..." autocomplete="off">
+    <input class="key-input" id="apiKey" type="password" placeholder="AIzaSy..." autocomplete="off">
     <button class="key-save" onclick="saveKey()">حفظ</button>
   </div>
   <div class="key-ok" id="keyOk">✅ المفتاح محفوظ — يمكنك رفع صورة الجواز</div>
-  <div class="key-help">
-    احصل على مفتاحك من <a href="https://console.anthropic.com/keys" target="_blank">console.anthropic.com/keys</a> — يُحفظ على جهازك فقط
+  <button class="key-toggle" onclick="toggleSteps()">📋 كيف أحصل على المفتاح المجاني؟</button>
+  <div class="key-steps" id="keySteps">
+    1️⃣ افتح: <a href="https://aistudio.google.com/apikey" target="_blank">aistudio.google.com/apikey</a><br>
+    2️⃣ سجّل بحسابك على Google<br>
+    3️⃣ اضغط <strong>Create API Key</strong><br>
+    4️⃣ انسخ المفتاح والصقه هنا ثم اضغط حفظ
   </div>
 </div>
 
@@ -141,8 +136,8 @@ body{font-family:'Tajawal',Arial,sans-serif;background:#F4F7F6;color:#1C2B28;min
 </div>
 
 <div class="priv">
-  <strong>🔒 خصوصيتك محمية</strong>
-  المفتاح يُحفظ على جهازك فقط — الصورة تُرسل لـ Anthropic AI مباشرة
+  <strong>🔒 مجاني وآمن</strong>
+  Gemini API مجاني — المفتاح يُحفظ على جهازك فقط
 </div>
 
 <script>
@@ -157,25 +152,26 @@ const FIELDS=[
   {key:"gender",      ar:"الجنس",              en:"Gender",              icon:"👥"},
 ];
 
-let b64=null, currentData=null;
-let apiKey=localStorage.getItem('pp_key')||'';
+let b64=null, mime='image/jpeg', currentData=null;
+let apiKey=localStorage.getItem('gemini_key')||'';
+if(apiKey){document.getElementById('apiKey').value=apiKey;document.getElementById('keyOk').style.display='flex';}
 
-// Load saved key
-if(apiKey){
-  document.getElementById('apiKey').value=apiKey;
-  document.getElementById('keyOk').style.display='flex';
+function toggleSteps(){
+  const s=document.getElementById('keySteps');
+  s.classList.toggle('show');
 }
 
 function saveKey(){
   const k=document.getElementById('apiKey').value.trim();
-  if(!k.startsWith('sk-')){alert('المفتاح يجب أن يبدأ بـ sk-');return;}
+  if(!k.startsWith('AIza')){alert('المفتاح يجب أن يبدأ بـ AIza');return;}
   apiKey=k;
-  localStorage.setItem('pp_key',k);
+  localStorage.setItem('gemini_key',k);
   document.getElementById('keyOk').style.display='flex';
 }
 
 function onFile(file){
   if(!file)return;
+  mime=file.type||'image/jpeg';
   const reader=new FileReader();
   reader.onload=e=>{
     const img=new Image();
@@ -185,7 +181,7 @@ function onFile(file){
       const c=document.createElement('canvas');c.width=w;c.height=h;
       c.getContext('2d').drawImage(img,0,0,w,h);
       const jpeg=c.toDataURL('image/jpeg',0.88);
-      b64=jpeg.split(',')[1];
+      b64=jpeg.split(',')[1]; mime='image/jpeg';
       document.getElementById('prevImg').src=jpeg;
       document.getElementById('srcGrid').style.display='none';
       document.getElementById('prevCard').style.display='block';
@@ -204,7 +200,7 @@ document.getElementById('cameraInput').onchange=e=>{onFile(e.target.files[0]);e.
 
 async function analyze(){
   if(!b64)return;
-  if(!apiKey){showErr('⚠️ أدخل مفتاح API أولاً ثم اضغط حفظ');return;}
+  if(!apiKey){showErr('⚠️ أدخل مفتاح Gemini API أولاً ثم اضغط حفظ');return;}
   const btn=document.getElementById('anBtn');
   btn.disabled=true;
   document.getElementById('loading').style.display='block';
@@ -216,28 +212,30 @@ async function analyze(){
 {"fullNameAr":"الاسم الكامل بالعربية أو null","fullNameEn":"Full name in English or null","passportNumber":"Passport number or null","dateOfBirth":"DD/MM/YYYY or null","issueDate":"DD/MM/YYYY or null","expiryDate":"DD/MM/YYYY or null","nationality":"الجنسية بالعربية والإنجليزية or null","gender":"ذكر / Male أو أنثى / Female or null"}`;
 
   try{
-    const res=await fetch('https://api.anthropic.com/v1/messages',{
+    const url=`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+    const res=await fetch(url,{
       method:'POST',
-      headers:{
-        'Content-Type':'application/json',
-        'x-api-key':apiKey,
-        'anthropic-version':'2023-06-01',
-        'anthropic-dangerous-direct-browser-access':'true'
-      },
-      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:[
-        {type:'image',source:{type:'base64',media_type:'image/jpeg',data:b64}},
-        {type:'text',text:prompt}
-      ]}]})
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        contents:[{parts:[
+          {inline_data:{mime_type:mime,data:b64}},
+          {text:prompt}
+        ]}],
+        generationConfig:{temperature:0,maxOutputTokens:1000}
+      })
     });
     const json=await res.json();
-    if(!res.ok)throw new Error(json?.error?.message||'HTTP '+res.status);
-    const raw=json.content.map(b=>b.text||'').join('').trim()
-      .replace(/^```[a-z]*\n?/i,'').replace(/```$/,'').trim();
-    currentData=JSON.parse(raw);
+    if(!res.ok){
+      const msg=json?.error?.message||'HTTP '+res.status;
+      throw new Error(msg);
+    }
+    const raw=json.candidates?.[0]?.content?.parts?.[0]?.text||'';
+    const clean=raw.trim().replace(/^```[a-z]*\n?/i,'').replace(/```$/,'').trim();
+    currentData=JSON.parse(clean);
     renderResults(currentData);
   }catch(e){
-    if(e.message.includes('401')||e.message.includes('invalid_api_key'))
-      showErr('⚠️ مفتاح API خاطئ — تأكد من المفتاح وأعد الحفظ');
+    if(e.message.includes('API_KEY_INVALID')||e.message.includes('API key'))
+      showErr('⚠️ مفتاح Gemini خاطئ — تأكد من المفتاح وأعد الحفظ');
     else if(e.message.includes('JSON')||e.message.includes('Syntax'))
       showErr('⚠️ لم يُعثر على جواز سفر واضح — جرب بصورة أوضح');
     else showErr('⚠️ خطأ: '+e.message);
