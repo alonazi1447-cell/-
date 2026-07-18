@@ -10,10 +10,21 @@
 body{font-family:'Tajawal',Arial,sans-serif;background:#F4F7F6;color:#1C2B28;min-height:100vh;padding:18px;direction:rtl}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-.hdr{text-align:center;margin-bottom:22px}
+.hdr{text-align:center;margin-bottom:20px}
 .hdr-ico{width:64px;height:64px;background:linear-gradient(135deg,#00897B,#00695C);border-radius:18px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:10px;box-shadow:0 4px 16px rgba(0,150,136,.3)}
 .hdr h1{font-size:1.65rem;font-weight:900}
 .hdr p{font-size:.88rem;color:#546E7A;margin-top:4px}
+
+/* API Key */
+.key-card{background:#fff;border-radius:16px;padding:14px;margin-bottom:16px;border:1.5px solid #CFE8E5}
+.key-title{font-size:.82rem;font-weight:700;color:#546E7A;margin-bottom:8px}
+.key-row{display:flex;gap:8px}
+.key-input{flex:1;padding:11px 12px;border:1.5px solid #CFE8E5;border-radius:12px;font-size:.85rem;font-family:inherit;direction:ltr;text-align:left;outline:none;background:#F4F7F6}
+.key-input:focus{border-color:#00897B}
+.key-save{padding:11px 16px;background:linear-gradient(135deg,#00897B,#00695C);color:#fff;border:none;border-radius:12px;font-size:.85rem;font-weight:700;font-family:inherit;cursor:pointer;white-space:nowrap}
+.key-ok{display:none;margin-top:8px;background:#E8F5E9;border:1.5px solid #25D366;border-radius:10px;padding:9px 12px;font-size:.8rem;color:#1B5E20;font-weight:600;align-items:center;gap:6px}
+.key-help{font-size:.74rem;color:#90A4AE;margin-top:7px;line-height:1.6}
+.key-help a{color:#00897B;text-decoration:none}
 
 .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
 .src-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:22px 12px;border-radius:18px;border:2px solid #B2DFDB;background:#fff;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);user-select:none;-webkit-tap-highlight-color:transparent}
@@ -29,6 +40,7 @@ body{font-family:'Tajawal',Arial,sans-serif;background:#F4F7F6;color:#1C2B28;min
 .prev-btn+.prev-btn{border-right:1px solid #CFE8E5}
 
 .an-btn{width:100%;padding:15px;background:linear-gradient(135deg,#00897B,#00695C);color:#fff;border:none;border-radius:16px;font-size:1.07rem;font-weight:900;font-family:inherit;cursor:pointer;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,150,136,.33);display:none;align-items:center;justify-content:center;gap:10px}
+.an-btn:disabled{opacity:.6;cursor:not-allowed}
 
 .loading{display:none;text-align:center;padding:30px;background:#fff;border-radius:20px;border:1.5px solid #CFE8E5;margin-bottom:16px}
 .spinner{width:46px;height:46px;border:4px solid #B2DFDB;border-top-color:#00897B;border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite}
@@ -68,19 +80,28 @@ body{font-family:'Tajawal',Arial,sans-serif;background:#F4F7F6;color:#1C2B28;min
   <p>استخرج بيانات أي جواز سفر بالذكاء الاصطناعي</p>
 </div>
 
+<!-- API Key -->
+<div class="key-card">
+  <div class="key-title">🔑 مفتاح Anthropic API</div>
+  <div class="key-row">
+    <input class="key-input" id="apiKey" type="password" placeholder="sk-ant-api03-..." autocomplete="off">
+    <button class="key-save" onclick="saveKey()">حفظ</button>
+  </div>
+  <div class="key-ok" id="keyOk">✅ المفتاح محفوظ — يمكنك رفع صورة الجواز</div>
+  <div class="key-help">
+    احصل على مفتاحك من <a href="https://console.anthropic.com/keys" target="_blank">console.anthropic.com/keys</a> — يُحفظ على جهازك فقط
+  </div>
+</div>
+
 <input type="file" id="galleryInput" accept="image/*" style="display:none">
 <input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
 
 <div class="grid" id="srcGrid">
   <div class="src-btn" onclick="document.getElementById('galleryInput').click()">
-    <span class="ico">🖼️</span>
-    <span class="lbl">الاستديو</span>
-    <span class="sub">معرض الصور</span>
+    <span class="ico">🖼️</span><span class="lbl">الاستديو</span><span class="sub">معرض الصور</span>
   </div>
   <div class="src-btn cam" onclick="document.getElementById('cameraInput').click()">
-    <span class="ico">📷</span>
-    <span class="lbl">الكاميرا</span>
-    <span class="sub">تصوير مباشر</span>
+    <span class="ico">📷</span><span class="lbl">الكاميرا</span><span class="sub">تصوير مباشر</span>
   </div>
 </div>
 
@@ -121,7 +142,7 @@ body{font-family:'Tajawal',Arial,sans-serif;background:#F4F7F6;color:#1C2B28;min
 
 <div class="priv">
   <strong>🔒 خصوصيتك محمية</strong>
-  الصورة تُرسل مباشرة لـ Anthropic AI فقط ولا تُحفظ على أي خادم آخر
+  المفتاح يُحفظ على جهازك فقط — الصورة تُرسل لـ Anthropic AI مباشرة
 </div>
 
 <script>
@@ -137,6 +158,21 @@ const FIELDS=[
 ];
 
 let b64=null, currentData=null;
+let apiKey=localStorage.getItem('pp_key')||'';
+
+// Load saved key
+if(apiKey){
+  document.getElementById('apiKey').value=apiKey;
+  document.getElementById('keyOk').style.display='flex';
+}
+
+function saveKey(){
+  const k=document.getElementById('apiKey').value.trim();
+  if(!k.startsWith('sk-')){alert('المفتاح يجب أن يبدأ بـ sk-');return;}
+  apiKey=k;
+  localStorage.setItem('pp_key',k);
+  document.getElementById('keyOk').style.display='flex';
+}
 
 function onFile(file){
   if(!file)return;
@@ -168,6 +204,7 @@ document.getElementById('cameraInput').onchange=e=>{onFile(e.target.files[0]);e.
 
 async function analyze(){
   if(!b64)return;
+  if(!apiKey){showErr('⚠️ أدخل مفتاح API أولاً ثم اضغط حفظ');return;}
   const btn=document.getElementById('anBtn');
   btn.disabled=true;
   document.getElementById('loading').style.display='block';
@@ -181,7 +218,12 @@ async function analyze(){
   try{
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
-      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      headers:{
+        'Content-Type':'application/json',
+        'x-api-key':apiKey,
+        'anthropic-version':'2023-06-01',
+        'anthropic-dangerous-direct-browser-access':'true'
+      },
       body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:[
         {type:'image',source:{type:'base64',media_type:'image/jpeg',data:b64}},
         {type:'text',text:prompt}
@@ -189,12 +231,15 @@ async function analyze(){
     });
     const json=await res.json();
     if(!res.ok)throw new Error(json?.error?.message||'HTTP '+res.status);
-    const raw=json.content.map(b=>b.text||'').join('').trim().replace(/^```[a-z]*\n?/i,'').replace(/```$/,'').trim();
+    const raw=json.content.map(b=>b.text||'').join('').trim()
+      .replace(/^```[a-z]*\n?/i,'').replace(/```$/,'').trim();
     currentData=JSON.parse(raw);
     renderResults(currentData);
   }catch(e){
-    if(e.message.includes('401'))showErr('⚠️ خطأ في المصادقة — تأكد من إعداد GitHub Pages بشكل صحيح');
-    else if(e.message.includes('JSON')||e.message.includes('Syntax'))showErr('⚠️ لم يُعثر على جواز سفر واضح في الصورة');
+    if(e.message.includes('401')||e.message.includes('invalid_api_key'))
+      showErr('⚠️ مفتاح API خاطئ — تأكد من المفتاح وأعد الحفظ');
+    else if(e.message.includes('JSON')||e.message.includes('Syntax'))
+      showErr('⚠️ لم يُعثر على جواز سفر واضح — جرب بصورة أوضح');
     else showErr('⚠️ خطأ: '+e.message);
   }finally{
     btn.disabled=false;
