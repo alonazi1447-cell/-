@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>قارئ جواز السفر</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Tajawal',Arial,sans-serif;background:#F4F7F6;color:#1C2B28;min-height:100vh;padding:18px;direction:rtl}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.hdr{text-align:center;margin-bottom:22px}
+.hdr-ico{width:64px;height:64px;background:linear-gradient(135deg,#00897B,#00695C);border-radius:18px;display:inline-flex;align-items:center;justify-content:center;margin-bottom:10px;box-shadow:0 4px 16px rgba(0,150,136,.3)}
+.hdr h1{font-size:1.65rem;font-weight:900}
+.hdr p{font-size:.88rem;color:#546E7A;margin-top:4px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.src-btn{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:22px 12px;border-radius:18px;border:2px solid #B2DFDB;background:#fff;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.05);user-select:none;-webkit-tap-highlight-color:transparent}
+.src-btn.cam{background:#E0F2F1;border-color:#80CBC4}
+.src-btn .ico{font-size:2.2rem;line-height:1}
+.src-btn .lbl{font-size:.9rem;font-weight:800;color:#00695C}
+.src-btn .sub{font-size:.73rem;color:#546E7A}
+
+.prev-card{background:#fff;border-radius:20px;border:1.5px solid #CFE8E5;overflow:hidden;margin-bottom:14px;display:none;box-shadow:0 2px 12px rgba(0,150,136,.1)}
+.prev-card img{width:100%;max-height:260px;object-fit:cover;display:block}
+.prev-acts{display:flex;border-top:1px solid #CFE8E5}
+.prev-btn{flex:1;padding:11px;border:none;background:#F4F7F6;color:#546E7A;font-size:.83rem;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:5px}
+.prev-btn+.prev-btn{border-right:1px solid #CFE8E5}
+
+.an-btn{width:100%;padding:15px;background:linear-gradient(135deg,#00897B,#00695C);color:#fff;border:none;border-radius:16px;font-size:1.07rem;font-weight:900;font-family:inherit;cursor:pointer;margin-bottom:16px;box-shadow:0 4px 16px rgba(0,150,136,.33);display:none;align-items:center;justify-content:center;gap:10px}
+
+.loading{display:none;text-align:center;padding:30px;background:#fff;border-radius:20px;border:1.5px solid #CFE8E5;margin-bottom:16px}
+.spinner{width:46px;height:46px;border:4px solid #B2DFDB;border-top-color:#00897B;border-radius:50%;margin:0 auto 14px;animation:spin .8s linear infinite}
+.loading p{color:#546E7A;font-weight:600}
+
+.err-box{display:none;background:#FFEBEE;border:1.5px solid #FFCDD2;border-radius:16px;padding:13px 18px;margin-bottom:14px;color:#C62828;font-weight:700;text-align:center;line-height:1.7}
+
+.result-card{display:none;background:#fff;border-radius:20px;border:1.5px solid #CFE8E5;box-shadow:0 2px 12px rgba(0,150,136,.1);margin-bottom:16px;overflow:hidden}
+.res-hdr{background:linear-gradient(135deg,#00897B,#00695C);padding:13px 18px;display:flex;align-items:center;gap:10px;color:#fff}
+.res-hdr h2{font-size:1rem;font-weight:800;margin:0}
+.fields{padding:14px;display:flex;flex-direction:column;gap:9px}
+.field{background:#F4F7F6;border-radius:12px;padding:11px 14px;display:flex;align-items:flex-start;gap:11px;border:1px solid #CFE8E5}
+.f-ico{width:36px;height:36px;background:#E0F2F1;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:1.1rem}
+.f-body{flex:1;min-width:0}
+.f-lbl{font-size:.74rem;color:#546E7A;font-weight:600;display:block}
+.f-lbl-en{font-size:.68rem;color:#90A4AE;display:block;margin-bottom:3px}
+.f-val{font-size:.97rem;font-weight:800;color:#1C2B28;word-break:break-all}
+.f-val.mono{font-family:'Courier New',monospace;letter-spacing:.04em}
+.f-null{color:#B0BEC5;font-weight:400;font-style:italic;font-size:.88rem}
+
+.act-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 14px 14px}
+.act-btn{padding:11px 8px;border-radius:12px;border:none;cursor:pointer;font-size:.86rem;font-weight:700;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px}
+.act-copy{background:#FFFDE7;color:#7B5800;border:1.5px solid #F9A825}
+.act-wa{background:#E8F5E9;color:#1B5E20;border:1.5px solid #25D366}
+
+.priv{background:#FFFDE7;border:1px solid #FFE082;border-radius:12px;padding:10px 14px;font-size:.78rem;color:#6D4C00;text-align:center;line-height:1.6}
+.priv strong{display:block;margin-bottom:2px}
+</style>
+</head>
+<body>
+
+<div class="hdr">
+  <div class="hdr-ico">
+    <svg width="34" height="34" viewBox="0 0 24 24" fill="white"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM6 10h2v2H6zm0 4h8v2H6zm4-4h8v2h-8z"/></svg>
+  </div>
+  <h1>قارئ جواز السفر</h1>
+  <p>استخرج بيانات أي جواز سفر بالذكاء الاصطناعي</p>
+</div>
+
+<input type="file" id="galleryInput" accept="image/*" style="display:none">
+<input type="file" id="cameraInput" accept="image/*" capture="environment" style="display:none">
+
+<div class="grid" id="srcGrid">
+  <div class="src-btn" onclick="document.getElementById('galleryInput').click()">
+    <span class="ico">🖼️</span>
+    <span class="lbl">الاستديو</span>
+    <span class="sub">معرض الصور</span>
+  </div>
+  <div class="src-btn cam" onclick="document.getElementById('cameraInput').click()">
+    <span class="ico">📷</span>
+    <span class="lbl">الكاميرا</span>
+    <span class="sub">تصوير مباشر</span>
+  </div>
+</div>
+
+<div class="prev-card" id="prevCard">
+  <img id="prevImg" src="" alt="جواز السفر">
+  <div class="prev-acts">
+    <button class="prev-btn" onclick="document.getElementById('galleryInput').click()">🖼️ تغيير</button>
+    <button class="prev-btn" onclick="document.getElementById('cameraInput').click()">📷 تصوير جديد</button>
+  </div>
+</div>
+
+<button class="an-btn" id="anBtn" onclick="analyze()">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.56l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+  استخراج البيانات
+</button>
+
+<div class="loading" id="loading">
+  <div class="spinner"></div>
+  <p>جارٍ تحليل صورة الجواز...</p>
+</div>
+
+<div class="err-box" id="errBox"></div>
+
+<div class="result-card" id="resultCard">
+  <div class="res-hdr">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="white"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+    <h2>بيانات جواز السفر</h2>
+  </div>
+  <div class="fields" id="fieldsDiv"></div>
+  <div class="act-row">
+    <button class="act-btn act-copy" id="copyBtn" onclick="copyAll()">📋 نسخ البيانات</button>
+    <button class="act-btn act-wa" onclick="shareWA()">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      واتساب
+    </button>
+  </div>
+</div>
+
+<div class="priv">
+  <strong>🔒 خصوصيتك محمية</strong>
+  الصورة تُرسل مباشرة لـ Anthropic AI فقط ولا تُحفظ على أي خادم آخر
+</div>
+
+<script>
+const FIELDS=[
+  {key:"fullNameAr",  ar:"الاسم بالعربية",    en:"Full Name (Arabic)",  icon:"👤"},
+  {key:"fullNameEn",  ar:"الاسم بالإنجليزية", en:"Full Name (English)", icon:"🔤",mono:true},
+  {key:"passportNumber",ar:"رقم الجواز",       en:"Passport Number",     icon:"🔢",mono:true},
+  {key:"dateOfBirth", ar:"تاريخ الميلاد",     en:"Date of Birth",       icon:"🎂"},
+  {key:"issueDate",   ar:"تاريخ الإصدار",     en:"Issue Date",          icon:"📅"},
+  {key:"expiryDate",  ar:"تاريخ الانتهاء",    en:"Expiry Date",         icon:"⏳"},
+  {key:"nationality", ar:"الجنسية",            en:"Nationality",         icon:"🌍"},
+  {key:"gender",      ar:"الجنس",              en:"Gender",              icon:"👥"},
+];
+
+let b64=null, currentData=null;
+
+function onFile(file){
+  if(!file)return;
+  const reader=new FileReader();
+  reader.onload=e=>{
+    const img=new Image();
+    img.onload=()=>{
+      const MAX=1600;let w=img.width,h=img.height;
+      if(w>MAX||h>MAX){if(w>=h){h=Math.round(h*MAX/w);w=MAX;}else{w=Math.round(w*MAX/h);h=MAX;}}
+      const c=document.createElement('canvas');c.width=w;c.height=h;
+      c.getContext('2d').drawImage(img,0,0,w,h);
+      const jpeg=c.toDataURL('image/jpeg',0.88);
+      b64=jpeg.split(',')[1];
+      document.getElementById('prevImg').src=jpeg;
+      document.getElementById('srcGrid').style.display='none';
+      document.getElementById('prevCard').style.display='block';
+      document.getElementById('anBtn').style.display='flex';
+      document.getElementById('resultCard').style.display='none';
+      document.getElementById('errBox').style.display='none';
+    };
+    img.onerror=()=>showErr('تعذّر تحميل الصورة');
+    img.src=e.target.result;
+  };
+  reader.readAsDataURL(file);
+}
+
+document.getElementById('galleryInput').onchange=e=>{onFile(e.target.files[0]);e.target.value='';};
+document.getElementById('cameraInput').onchange=e=>{onFile(e.target.files[0]);e.target.value='';};
+
+async function analyze(){
+  if(!b64)return;
+  const btn=document.getElementById('anBtn');
+  btn.disabled=true;
+  document.getElementById('loading').style.display='block';
+  document.getElementById('resultCard').style.display='none';
+  document.getElementById('errBox').style.display='none';
+
+  const prompt=`أنت خبير في قراءة جوازات السفر. حلل الصورة المرفقة واستخرج بيانات الجواز.
+أعد JSON فقط بدون أي نص إضافي أو markdown أو backticks:
+{"fullNameAr":"الاسم الكامل بالعربية أو null","fullNameEn":"Full name in English or null","passportNumber":"Passport number or null","dateOfBirth":"DD/MM/YYYY or null","issueDate":"DD/MM/YYYY or null","expiryDate":"DD/MM/YYYY or null","nationality":"الجنسية بالعربية والإنجليزية or null","gender":"ذكر / Male أو أنثى / Female or null"}`;
+
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json','anthropic-version':'2023-06-01','anthropic-dangerous-direct-browser-access':'true'},
+      body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1000,messages:[{role:'user',content:[
+        {type:'image',source:{type:'base64',media_type:'image/jpeg',data:b64}},
+        {type:'text',text:prompt}
+      ]}]})
+    });
+    const json=await res.json();
+    if(!res.ok)throw new Error(json?.error?.message||'HTTP '+res.status);
+    const raw=json.content.map(b=>b.text||'').join('').trim().replace(/^```[a-z]*\n?/i,'').replace(/```$/,'').trim();
+    currentData=JSON.parse(raw);
+    renderResults(currentData);
+  }catch(e){
+    if(e.message.includes('401'))showErr('⚠️ خطأ في المصادقة — تأكد من إعداد GitHub Pages بشكل صحيح');
+    else if(e.message.includes('JSON')||e.message.includes('Syntax'))showErr('⚠️ لم يُعثر على جواز سفر واضح في الصورة');
+    else showErr('⚠️ خطأ: '+e.message);
+  }finally{
+    btn.disabled=false;
+    document.getElementById('loading').style.display='none';
+  }
+}
+
+function showErr(msg){
+  const b=document.getElementById('errBox');
+  b.textContent=msg;b.style.display='block';
+}
+
+function renderResults(data){
+  const div=document.getElementById('fieldsDiv');
+  div.innerHTML='';
+  FIELDS.forEach(f=>{
+    const v=data[f.key];
+    div.innerHTML+=`<div class="field">
+      <div class="f-ico">${f.icon}</div>
+      <div class="f-body">
+        <span class="f-lbl">${f.ar}</span>
+        <span class="f-lbl-en">${f.en}</span>
+        <div class="f-val${f.mono?' mono':''}">${v||'<span class="f-null">غير متوفر</span>'}</div>
+      </div></div>`;
+  });
+  document.getElementById('resultCard').style.display='block';
+  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
+}
+
+function buildText(){
+  if(!currentData)return'';
+  return'📋 بيانات جواز السفر\n━━━━━━━━━━━━\n'+
+    FIELDS.map(f=>`${f.ar}: ${currentData[f.key]||'غير متوفر'}`).join('\n');
+}
+
+function copyAll(){
+  navigator.clipboard.writeText(buildText()).then(()=>{
+    const b=document.getElementById('copyBtn');
+    const o=b.textContent;b.textContent='✅ تم النسخ!';
+    setTimeout(()=>b.textContent=o,2000);
+  });
+}
+
+function shareWA(){
+  window.open('https://wa.me/?text='+encodeURIComponent(buildText()),'_blank');
+}
+</script>
+</body>
+</html>
